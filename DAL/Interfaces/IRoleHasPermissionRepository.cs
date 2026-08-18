@@ -6,5 +6,7 @@ namespace team_management_system.DAL.Interfaces
     public interface IRoleHasPermissionRepository : IRepository<MRoleHasPermission>
     {
         Task<List<String>> GetPermissionByRoleIdAsync(int id);
+        Task<MRoleHasPermission> GetAssignedPermissionByRoleAsync(int roleId, int permissionId, bool useNoTracking = false);
+        //Task<MRoleHasPermission> GetRolePermisionByIdAsync(int roleId, int permissionId, bool useNoTracking = false);
     }
 }

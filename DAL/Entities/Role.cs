@@ -22,5 +22,8 @@ public partial class Role
     public string? Slug { get; set; }
 
     [InverseProperty("Role")]
+    public virtual ICollection<MRoleHasPermission> MRoleHasPermissions { get; set; } = new List<MRoleHasPermission>();
+
+    [InverseProperty("Role")]
     public virtual ICollection<UserHasRole> UserHasRoles { get; set; } = new List<UserHasRole>();
 }

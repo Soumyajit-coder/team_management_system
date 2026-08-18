@@ -2,6 +2,7 @@
 using team_management_system.BAL.Interfaces;
 using team_management_system.DAL.Entities;
 using team_management_system.DAL.Interfaces;
+using team_management_system.DTO;
 
 namespace team_management_system.BAL.Services
 {
@@ -23,6 +24,21 @@ namespace team_management_system.BAL.Services
         public async Task<Role> GetRoleDetailsAsync(int id)
         {
             var roleDetails = await _roleRepository.GetDetailsByIdAsync(id);
+            return roleDetails;
+        }
+        public async Task<long> CreateRoleAsync(RoleDTO dto)
+        {
+            Role createRoleDetails = _mapper.Map<Role>(dto);
+            if (string.IsNullOrEmpty(createRoleDetails.Slug) && !string.IsNullOrEmpty(createRoleDetails.RoleName))
+            {
+                createRoleDetails.Slug = createRoleDetails.RoleName.Trim().ToLower().Replace(" ", "_");
+            }
+            await _roleRepository.CreateAsync(createRoleDetails);
+            return createRoleDetails.Id;
+        }
+        public async Task<Role> GetRoleByConditionAsync(string roleName)
+        {
+            var roleDetails = await _roleRepository.GetDetailsAsync(r => r.RoleName == roleName);
             return roleDetails;
         }
     }

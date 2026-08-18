@@ -23,5 +23,22 @@ namespace team_management_system.DAL.Repositories
             var permissionName = await (from rhp in _dbContext.MRoleHasPermissions join p in _dbContext.MPermissions on rhp.PermissionId equals p.Id where rhp.RoleId == id select p.Slug).ToListAsync();
             return permissionName;
         }
+        public async Task<MRoleHasPermission> GetAssignedPermissionByRoleAsync(int roleId, int permissionId, bool useNoTracking = false)
+        {
+            if (useNoTracking)
+            {
+                return await _dbSet.AsNoTracking().Where(rp => rp.RoleId == roleId && rp.PermissionId == permissionId).FirstOrDefaultAsync();
+            } else
+            {
+                return await _dbSet.Where(rp => rp.RoleId == roleId && rp.PermissionId == permissionId).FirstOrDefaultAsync();
+            }
+        }
+        //public async Task<MRoleHasPermission> GetRolePermisionByIdAsync(int roleId, int permissionId, bool useNoTracking = false)
+        //{
+        //    if (roleId != null && permissionId != null)
+        //    {
+        //        return await _dbSet.Where()
+        //    }
+        //}
     }
 }

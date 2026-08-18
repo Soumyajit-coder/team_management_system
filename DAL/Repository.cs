@@ -42,5 +42,14 @@ namespace team_management_system.DAL
             var details = await _dbSet.FindAsync(id);
             return details;
         }
+        public async Task<int> GetLastIdAsync(Expression<Func<T, int>> idSelector)
+        {
+            var hasData = await _dbSet.AnyAsync();
+            if (!hasData)
+            {
+                return 0;
+            }
+            return await _dbSet.MaxAsync(idSelector);
+        }
     }
 }

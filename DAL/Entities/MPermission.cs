@@ -20,4 +20,7 @@ public partial class MPermission
     [Column("slug")]
     [StringLength(20)]
     public string? Slug { get; set; }
+
+    [InverseProperty("Permission")]
+    public virtual ICollection<MRoleHasPermission> MRoleHasPermissions { get; set; } = new List<MRoleHasPermission>();
 }

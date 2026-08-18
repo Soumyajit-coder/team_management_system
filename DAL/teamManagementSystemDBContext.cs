@@ -38,13 +38,13 @@ public partial class teamManagementSystemDBContext : DbContext
 
         modelBuilder.Entity<MRoleHasPermission>(entity =>
         {
-            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.HasKey(e => e.Id).HasName("m_role_has_permission_id_pk");
 
-            entity.HasOne(d => d.Permission).WithMany()
+            entity.HasOne(d => d.Permission).WithMany(p => p.MRoleHasPermissions)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_m_role_has_permission_permission_id");
 
-            entity.HasOne(d => d.Role).WithMany()
+            entity.HasOne(d => d.Role).WithMany(p => p.MRoleHasPermissions)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_m_role_has_permission_role_id");
         });
