@@ -39,6 +39,24 @@ public partial class User
     [Column("updated_at", TypeName = "timestamp without time zone")]
     public DateTime? UpdatedAt { get; set; }
 
+    [InverseProperty("OwnerUser")]
+    public virtual ICollection<MOrganization> MOrganizations { get; set; } = new List<MOrganization>();
+
+    [InverseProperty("CreatedByNavigation")]
+    public virtual ICollection<MProject> MProjects { get; set; } = new List<MProject>();
+
+    [InverseProperty("TeamLead")]
+    public virtual ICollection<MTeam> MTeams { get; set; } = new List<MTeam>();
+
+    [InverseProperty("User")]
+    public virtual ICollection<OrganizationMember> OrganizationMembers { get; set; } = new List<OrganizationMember>();
+
+    [InverseProperty("User")]
+    public virtual ICollection<ProjectMember> ProjectMembers { get; set; } = new List<ProjectMember>();
+
+    [InverseProperty("User")]
+    public virtual ICollection<TeamMember> TeamMembers { get; set; } = new List<TeamMember>();
+
     [InverseProperty("User")]
     public virtual ICollection<UserHasRole> UserHasRoles { get; set; } = new List<UserHasRole>();
 }

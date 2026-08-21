@@ -16,11 +16,23 @@ public partial class teamManagementSystemDBContext : DbContext
     {
     }
 
+    public virtual DbSet<MOrganization> MOrganizations { get; set; }
+
     public virtual DbSet<MPermission> MPermissions { get; set; }
+
+    public virtual DbSet<MProject> MProjects { get; set; }
 
     public virtual DbSet<MRoleHasPermission> MRoleHasPermissions { get; set; }
 
+    public virtual DbSet<MTeam> MTeams { get; set; }
+
+    public virtual DbSet<OrganizationMember> OrganizationMembers { get; set; }
+
+    public virtual DbSet<ProjectMember> ProjectMembers { get; set; }
+
     public virtual DbSet<Role> Roles { get; set; }
+
+    public virtual DbSet<TeamMember> TeamMembers { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -31,9 +43,39 @@ public partial class teamManagementSystemDBContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<MOrganization>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("m_organization_pkey");
+
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.IsActive).HasDefaultValue((short)1);
+            entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            entity.HasOne(d => d.OwnerUser).WithMany(p => p.MOrganizations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_m_organization_owner");
+        });
+
         modelBuilder.Entity<MPermission>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("pk_m_permission");
+        });
+
+        modelBuilder.Entity<MProject>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("m_project_pkey");
+
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.Status).HasDefaultValue((short)1);
+            entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.MProjects)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_m_project_created_by");
+
+            entity.HasOne(d => d.Org).WithMany(p => p.MProjects)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_m_project_organization");
         });
 
         modelBuilder.Entity<MRoleHasPermission>(entity =>
@@ -49,11 +91,76 @@ public partial class teamManagementSystemDBContext : DbContext
                 .HasConstraintName("fk_m_role_has_permission_role_id");
         });
 
+        modelBuilder.Entity<MTeam>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("m_team_pkey");
+
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.IsActive).HasDefaultValue((short)1);
+            entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            entity.HasOne(d => d.Org).WithMany(p => p.MTeams)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_m_team_organization");
+
+            entity.HasOne(d => d.TeamLead).WithMany(p => p.MTeams).HasConstraintName("fk_m_team_lead");
+        });
+
+        modelBuilder.Entity<OrganizationMember>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("organization_members_pkey");
+
+            entity.Property(e => e.IsActive).HasDefaultValue((short)1);
+            entity.Property(e => e.JoinedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.Role).HasDefaultValueSql("'MEMBER'::character varying");
+
+            entity.HasOne(d => d.Org).WithMany(p => p.OrganizationMembers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_organization_members_org");
+
+            entity.HasOne(d => d.User).WithMany(p => p.OrganizationMembers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_organization_members_user");
+        });
+
+        modelBuilder.Entity<ProjectMember>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("project_members_pkey");
+
+            entity.Property(e => e.IsActive).HasDefaultValue((short)1);
+            entity.Property(e => e.JoinedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.Role).HasDefaultValueSql("'MEMBER'::character varying");
+
+            entity.HasOne(d => d.Project).WithMany(p => p.ProjectMembers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_project_members_project");
+
+            entity.HasOne(d => d.User).WithMany(p => p.ProjectMembers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_project_members_user");
+        });
+
         modelBuilder.Entity<Role>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("pk_roles");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<TeamMember>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("team_member_pkey");
+
+            entity.Property(e => e.IsActive).HasDefaultValue((short)1);
+            entity.Property(e => e.JoinedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            entity.HasOne(d => d.Team).WithMany(p => p.TeamMembers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_team_member_team");
+
+            entity.HasOne(d => d.User).WithMany(p => p.TeamMembers)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_team_member_user");
         });
 
         modelBuilder.Entity<User>(entity =>
