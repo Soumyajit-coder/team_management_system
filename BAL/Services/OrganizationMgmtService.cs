@@ -20,6 +20,10 @@ namespace team_management_system.BAL.Services
         public async Task<long> CreateOrganizationAsync(OrganizationDTO dto)
         {
             MOrganization createOrganization = _mapper.Map<MOrganization>(dto);
+            if (!string.IsNullOrEmpty(createOrganization.OrgName) && string.IsNullOrEmpty(createOrganization.Slug))
+            {
+                createOrganization.Slug = createOrganization.OrgName.Trim().ToLower().Replace(" ", "_");
+            }
             await _organizationMgmtRepository.CreateAsync(createOrganization);
             return createOrganization.Id;            
         }
@@ -33,10 +37,10 @@ namespace team_management_system.BAL.Services
             var orgDetails = await _organizationMgmtRepository.GetDetailsByIdAsync(id);
             return orgDetails;
         }
-        //public async Task<String> GetOrganizationByConditionAsync(string condition)
-        //{
-        //    var orgName = await _organizationMgmtRepository.GetDetailsByConditionAsync(condition);
-        //    return orgName;
-        //}
+        public async Task<String> GetOrganizationByConditionAsync(string condition)
+        {
+            var orgName = await _organizationMgmtRepository.GetDetailsByNameAsync(condition);
+            return orgName;
+        }
     }
 }

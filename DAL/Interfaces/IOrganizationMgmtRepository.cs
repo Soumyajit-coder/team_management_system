@@ -5,6 +5,6 @@ namespace team_management_system.DAL.Interfaces
 {
     public interface IOrganizationMgmtRepository : IRepository<MOrganization>
     {
-        Task<MOrganization> GetDetailsByConditionAsync(string condition);
+        Task<String> GetDetailsByNameAsync(string condition);
     }
 }

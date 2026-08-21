@@ -14,9 +14,9 @@ namespace team_management_system.DAL.Repositories
             _dbSet = _dbContext.Set<MOrganization>();
         }
 
-        public async Task<MOrganization> GetDetailsByConditionAsync(string condition)
+        public async Task<String> GetDetailsByNameAsync(string condition)
         {
-            var OrgName = await _dbSet.Where(x => x.OrgName == condition).FirstOrDefaultAsync();
+            var OrgName = await _dbSet.Where(x => x.OrgName == condition).Select(x => x.OrgName).FirstOrDefaultAsync();
             return OrgName;
         }
     }

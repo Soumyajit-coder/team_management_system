@@ -8,6 +8,6 @@ namespace team_management_system.BAL.Interfaces
         Task<List<MOrganization>> GetOrganizationListAsync();
         Task<MOrganization> GetOrganizationById(int id);
         Task<long> CreateOrganizationAsync(OrganizationDTO dto);
-        //Task<String> GetOrganizationByConditionAsync(string condition);
+        Task<String> GetOrganizationByConditionAsync(string condition);
     }
 }

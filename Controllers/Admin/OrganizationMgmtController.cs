@@ -15,10 +15,10 @@ namespace team_management_system.Controllers.Admin
     {
         private readonly IOrganizationMgmtService _organizationMgmtService;
         private APIResponse _apiResponse;
-        public OrganizationMgmtController(IOrganizationMgmtService organizationMgmtService, APIResponse apiResponse)
+        public OrganizationMgmtController(IOrganizationMgmtService organizationMgmtService)
         {
             _organizationMgmtService = organizationMgmtService;
-            _apiResponse = apiResponse;
+            _apiResponse = new();
         }
         [HttpGet]
         [Route("organization-list")]
@@ -31,7 +31,7 @@ namespace team_management_system.Controllers.Admin
         {
             try
             {
-                var orgList = _organizationMgmtService.GetOrganizationListAsync();
+                var orgList = await _organizationMgmtService.GetOrganizationListAsync();
                 if (orgList == null)
                 {
                     _apiResponse.Message.Add("User not found");
@@ -68,22 +68,16 @@ namespace team_management_system.Controllers.Admin
                     _apiResponse.Message.Add("DTO not found");
                     _apiResponse.Status = false;
                     _apiResponse.StatusCode = HttpStatusCode.NotFound;
+                    return _apiResponse;
                 }
-                var orgDetails = await _organizationMgmtService.GetOrganizationById(dto.Id);
-                if (dto.OrgName == orgDetails?.OrgName)
+                var orgName = await _organizationMgmtService.GetOrganizationByConditionAsync(dto.OrgName);
+                if (!string.IsNullOrEmpty(orgName))
                 {
                     _apiResponse.Message.Add($"Organization Name {dto.OrgName} alrady exist");
                     _apiResponse.Status = false;
                     _apiResponse.StatusCode = HttpStatusCode.BadRequest;
                     return _apiResponse;
-                }
-                if (dto.Slug == orgDetails?.Slug)
-                {
-                    _apiResponse.Message.Add($"Organization Key {dto.Slug} alrady exist");
-                    _apiResponse.Status = false;
-                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
-                    return _apiResponse;
-                }
+                }                
                 long createOrganization = await _organizationMgmtService.CreateOrganizationAsync(dto);
                 if (createOrganization != 0)
                 {
