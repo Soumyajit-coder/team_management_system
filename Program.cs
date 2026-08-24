@@ -59,6 +59,7 @@ builder.Services.AddTransient<IRoleHasPermissionService, RoleHasPermissionServic
 builder.Services.AddTransient<IPermissionService, PermissionService>();
 builder.Services.AddTransient<IOrganizationMgmtService, OrganizationMgmtService>();
 builder.Services.AddTransient<IOrganizationMemberService, OrganizationMemberService>();
+builder.Services.AddTransient<ITeamService, TeamService>();
 
 // Helper
 builder.Services.AddTransient<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
