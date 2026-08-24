@@ -13,6 +13,8 @@ namespace team_management_system.Helper
             CreateMap<Role, RoleDTO>().ReverseMap();
             CreateMap<MPermission, PermissionDTO>().ReverseMap();
             CreateMap<MOrganization, OrganizationDTO>().ReverseMap();
+            CreateMap<OrganizationMember, OrganizationMembersDTO>().ReverseMap();
+            CreateMap<MTeam, TeamDTO>().ReverseMap();
         }
     }
 }

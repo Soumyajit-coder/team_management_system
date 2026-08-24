@@ -48,6 +48,8 @@ builder.Services.AddTransient<IUserHasRoleRepository, UserHasRepository>();
 builder.Services.AddTransient<IRoleHasPermissionRepository, RoleHasPermissionRepository>();
 builder.Services.AddTransient<IPermissionRepository, PermissionRepository>();
 builder.Services.AddTransient<IOrganizationMgmtRepository, OrganizationMgmtRepository>();
+builder.Services.AddTransient<IOrganizationMembersRepository, OrganizationMembersRepository>();
+builder.Services.AddTransient<ITeamRepository, TeamRepository>();
 
 //Services
 builder.Services.AddTransient<IUserDetailsService, UserDetailsService>();
@@ -56,6 +58,7 @@ builder.Services.AddTransient<IUserHasRoleService, UserHasRoleService>();
 builder.Services.AddTransient<IRoleHasPermissionService, RoleHasPermissionService>();
 builder.Services.AddTransient<IPermissionService, PermissionService>();
 builder.Services.AddTransient<IOrganizationMgmtService, OrganizationMgmtService>();
+builder.Services.AddTransient<IOrganizationMemberService, OrganizationMemberService>();
 
 // Helper
 builder.Services.AddTransient<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
