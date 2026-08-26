@@ -15,6 +15,7 @@ namespace team_management_system.Helper
             CreateMap<MOrganization, OrganizationDTO>().ReverseMap();
             CreateMap<OrganizationMember, OrganizationMembersDTO>().ReverseMap();
             CreateMap<MTeam, TeamDTO>().ReverseMap();
+            CreateMap<TeamMember, TeamMemberDTO>().ReverseMap();
         }
     }
 }
