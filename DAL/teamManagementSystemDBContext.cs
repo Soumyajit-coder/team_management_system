@@ -69,10 +69,6 @@ public partial class teamManagementSystemDBContext : DbContext
             entity.Property(e => e.Status).HasDefaultValue((short)1);
             entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.MProjects)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_m_project_created_by");
-
             entity.HasOne(d => d.Org).WithMany(p => p.MProjects)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_m_project_organization");
@@ -130,10 +126,6 @@ public partial class teamManagementSystemDBContext : DbContext
             entity.Property(e => e.IsActive).HasDefaultValue((short)1);
             entity.Property(e => e.JoinedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
             entity.Property(e => e.Role).HasDefaultValueSql("'MEMBER'::character varying");
-
-            entity.HasOne(d => d.Project).WithMany(p => p.ProjectMembers)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("fk_project_members_project");
 
             entity.HasOne(d => d.User).WithMany(p => p.ProjectMembers)
                 .OnDelete(DeleteBehavior.ClientSetNull)

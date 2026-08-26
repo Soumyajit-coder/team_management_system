@@ -30,10 +30,6 @@ public partial class ProjectMember
     [Column("is_active")]
     public short IsActive { get; set; }
 
-    [ForeignKey("ProjectId")]
-    [InverseProperty("ProjectMembers")]
-    public virtual MProject Project { get; set; } = null!;
-
     [ForeignKey("UserId")]
     [InverseProperty("ProjectMembers")]
     public virtual User User { get; set; } = null!;

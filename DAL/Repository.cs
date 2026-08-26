@@ -51,5 +51,15 @@ namespace team_management_system.DAL
             }
             return await _dbSet.MaxAsync(idSelector);
         }
+        public async Task<TResult> GetDetailsByNameAsync<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector, bool useNoTracking = false)
+        {
+            if (useNoTracking)
+            {
+                return await _dbSet.AsNoTracking().Where(predicate).Select(selector).FirstOrDefaultAsync();
+            } else
+            {
+                return await _dbSet.Where(predicate).Select(selector).FirstOrDefaultAsync();
+            }
+        }
     }
 }

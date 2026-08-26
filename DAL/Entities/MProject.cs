@@ -30,13 +30,13 @@ public partial class MProject
     public string? Description { get; set; }
 
     [Column("from_date")]
-    public DateOnly? FromDate { get; set; }
+    public DateOnly FromDate { get; set; }
 
     [Column("to_date")]
-    public DateOnly? ToDate { get; set; }
+    public DateOnly ToDate { get; set; }
 
     [Column("deadline")]
-    public DateOnly? Deadline { get; set; }
+    public DateOnly Deadline { get; set; }
 
     [Column("status")]
     public short Status { get; set; }
@@ -50,14 +50,7 @@ public partial class MProject
     [Column("updated_at", TypeName = "timestamp without time zone")]
     public DateTime UpdatedAt { get; set; }
 
-    [ForeignKey("CreatedBy")]
-    [InverseProperty("MProjects")]
-    public virtual User CreatedByNavigation { get; set; } = null!;
-
     [ForeignKey("OrgId")]
     [InverseProperty("MProjects")]
     public virtual MOrganization Org { get; set; } = null!;
-
-    [InverseProperty("Project")]
-    public virtual ICollection<ProjectMember> ProjectMembers { get; set; } = new List<ProjectMember>();
 }

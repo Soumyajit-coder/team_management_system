@@ -9,5 +9,6 @@ namespace team_management_system.DAL.Interface
         Task<T> CreateAsync(T entity);
         Task<T> GetDetailsByIdAsync(int id);
         Task<int> GetLastIdAsync(Expression<Func<T, int>> idSelector);
+        Task<TResult> GetDetailsByNameAsync<TResult>(Expression<Func<T, bool>> predicate, Expression<Func<T, TResult>> selector, bool useNoTracking = false);
     }
 }

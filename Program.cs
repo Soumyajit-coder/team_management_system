@@ -51,6 +51,7 @@ builder.Services.AddTransient<IOrganizationMgmtRepository, OrganizationMgmtRepos
 builder.Services.AddTransient<IOrganizationMembersRepository, OrganizationMembersRepository>();
 builder.Services.AddTransient<ITeamRepository, TeamRepository>();
 builder.Services.AddTransient<ITeamMemberRepository, TeamMemberRepository>();
+builder.Services.AddTransient<IProjectRepository, ProjectRepository>();
 
 //Services
 builder.Services.AddTransient<IUserDetailsService, UserDetailsService>();
@@ -62,6 +63,7 @@ builder.Services.AddTransient<IOrganizationMgmtService, OrganizationMgmtService>
 builder.Services.AddTransient<IOrganizationMemberService, OrganizationMemberService>();
 builder.Services.AddTransient<ITeamService, TeamService>();
 builder.Services.AddTransient<ITeamMemberService, TeamMemberService>();
+builder.Services.AddTransient<IProjectService, ProjectService>();
 
 // Helper
 builder.Services.AddTransient<IAuthorizationPolicyProvider, PermissionPolicyProvider>();

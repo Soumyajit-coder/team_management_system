@@ -42,9 +42,6 @@ public partial class User
     [InverseProperty("OwnerUser")]
     public virtual ICollection<MOrganization> MOrganizations { get; set; } = new List<MOrganization>();
 
-    [InverseProperty("CreatedByNavigation")]
-    public virtual ICollection<MProject> MProjects { get; set; } = new List<MProject>();
-
     [InverseProperty("TeamLead")]
     public virtual ICollection<MTeam> MTeams { get; set; } = new List<MTeam>();
 
