@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using team_management_system.BAL.Interfaces;
@@ -8,6 +9,7 @@ using team_management_system.Helper;
 
 namespace team_management_system.Controllers.Admin
 {
+    [Authorize(Roles = "s_admin, admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class ProjectMgmtController : ControllerBase
