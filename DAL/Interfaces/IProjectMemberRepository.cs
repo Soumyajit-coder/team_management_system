@@ -9,5 +9,6 @@ namespace team_management_system.DAL.Interfaces
         Task<List<ProjectMemberDetailsDTO>> GetProjectDetailsList();
         Task<List<ProjectMemberDetailsDTO>> SerachByProjectName(string p_name);
         Task<List<ProjectMemberDetailsDTO>> SerachByProjectId(int p_id);
+        Task<bool> MembersActiveDeactiveAsync(long id);
     }
 }

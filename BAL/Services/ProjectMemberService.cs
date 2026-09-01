@@ -32,5 +32,10 @@ namespace team_management_system.BAL.Services
             var projectMembersListByName = await _projectMemberRepository.SerachByProjectName(p_name);
             return projectMembersListByName;
         }
+        public async Task<bool> MemberActiveDeactiveToggle(long id)
+        {   
+            var result = await _projectMemberRepository.MembersActiveDeactiveAsync(id);
+            return result;
+        }
     }
 }

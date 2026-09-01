@@ -7,5 +7,6 @@ namespace team_management_system.BAL.Interfaces
         Task<List<ProjectMemberDetailsDTO>> GetProjectMemeberList();
         Task<long> CreateProjectMember(ProjectMemberDTO dto);
         Task<List<ProjectMemberDetailsDTO>> SearchProjectMemeberListByProjectName(string p_name);
+        Task<bool> MemberActiveDeactiveToggle(long id);
     }
 }

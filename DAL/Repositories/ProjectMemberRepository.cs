@@ -60,5 +60,22 @@ namespace team_management_system.DAL.Repositories
                                      ).ToListAsync();
             return projectDetailsList;
         }
+        public async Task<bool> MembersActiveDeactiveAsync(long id)
+        {
+            var user = await _dbSet.FirstOrDefaultAsync(u => u.Id == id);
+            if (user == null)
+            {
+                return false;
+            }
+            if (user.IsActive == 0)
+            {
+                int rowsAffected = await _dbSet.Where(u => u.Id == id).ExecuteUpdateAsync(s => s.SetProperty(u => u.IsActive, 1));
+                return true;
+            } else
+            {
+                int rowsAffected = await _dbSet.Where(u => u.Id == id).ExecuteUpdateAsync(s => s.SetProperty(u => u.IsActive, 0));
+                return true;
+            }
+        }
     }
 }

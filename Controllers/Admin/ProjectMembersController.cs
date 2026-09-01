@@ -94,5 +94,38 @@ namespace team_management_system.Controllers.Admin
                 return _apiResponse;
             }
         }
+        [HttpPut]
+        [Route(("deactivate/{id}"))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<APIResponse>> ActiveDeactiveProjectMembers(long id)
+        {
+            try
+            {
+                bool usersAffected = await _projectMemberService.MemberActiveDeactiveToggle(id);
+                if (usersAffected)
+                {
+                    _apiResponse.Message.Add("Member status updated successfully!");
+                    _apiResponse.Status = true;
+                    _apiResponse.StatusCode = HttpStatusCode.OK;
+                    return _apiResponse;
+                }
+                _apiResponse.Message.Add($"User not found with ID: {id}");
+                _apiResponse.Status = false;
+                _apiResponse.StatusCode = HttpStatusCode.NotFound;
+                return _apiResponse;
+            }
+            catch (Exception ex)
+            {
+                string detailedError = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                _apiResponse.Message.Add(detailedError);
+                _apiResponse.Status = false;
+                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                return _apiResponse;
+            }
+        }
+
     }
 }
