@@ -10,6 +10,7 @@ namespace team_management_system.Helper
         {
             CreateMap<User, UserDetailsDTO>().ReverseMap();
             CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<User, UserUpdateDTO>().ReverseMap();
             CreateMap<Role, RoleDTO>().ReverseMap();
             CreateMap<MPermission, PermissionDTO>().ReverseMap();
             CreateMap<MOrganization, OrganizationDTO>().ReverseMap();
@@ -18,6 +19,7 @@ namespace team_management_system.Helper
             CreateMap<TeamMember, TeamMemberDTO>().ReverseMap();
             CreateMap<MProject, ProjectDTO>().ReverseMap();
             CreateMap<ProjectMember, ProjectMemberDTO>().ReverseMap();
+            CreateMap<TaskMgmt, TaskMgmtDTO>().ReverseMap();
         }
     }
 }

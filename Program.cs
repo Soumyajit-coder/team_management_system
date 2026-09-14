@@ -40,6 +40,7 @@ builder.Services.AddAuthentication(option => {
     };
 });
 
+
 //Repositories
 builder.Services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddTransient<IUserRepository, UserRepository>();
@@ -53,6 +54,7 @@ builder.Services.AddTransient<ITeamRepository, TeamRepository>();
 builder.Services.AddTransient<ITeamMemberRepository, TeamMemberRepository>();
 builder.Services.AddTransient<IProjectRepository, ProjectRepository>();
 builder.Services.AddTransient<IProjectMemberRepository, ProjectMemberRepository>();
+builder.Services.AddTransient<ITaskMgmtRepository, TaskMgmtRepository>();
 
 //Services
 builder.Services.AddTransient<IUserDetailsService, UserDetailsService>();
@@ -66,6 +68,7 @@ builder.Services.AddTransient<ITeamService, TeamService>();
 builder.Services.AddTransient<ITeamMemberService, TeamMemberService>();
 builder.Services.AddTransient<IProjectService, ProjectService>();
 builder.Services.AddTransient<IProjectMemberService, ProjectMemberService>();
+builder.Services.AddTransient<ITaskMgmtService, TaskMgmtService>();
 
 // Helper
 builder.Services.AddTransient<IAuthorizationPolicyProvider, PermissionPolicyProvider>();

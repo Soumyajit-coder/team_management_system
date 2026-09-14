@@ -50,4 +50,7 @@ public partial class MOrganization
     [ForeignKey("OwnerUserId")]
     [InverseProperty("MOrganizations")]
     public virtual User OwnerUser { get; set; } = null!;
+
+    [InverseProperty("Organization")]
+    public virtual ICollection<TaskMgmt> TaskMgmts { get; set; } = new List<TaskMgmt>();
 }

@@ -202,5 +202,69 @@ namespace team_management_system.Controllers
             }
             
         }
+        [HttpPut]
+        [Route("update-user-details/{id}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<APIResponse>> UpdateUserDetails(int id, UserUpdateDTO dto)
+        {
+            try
+            {
+                if (dto == null)
+                {
+                    _apiResponse.Message.Add("Something went wrong!");
+                    _apiResponse.Status= false;
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    return _apiResponse;
+                }
+                var existingUser = await _userDetailsService.GetUserByConditionAsync(id);
+                if (existingUser == null)
+                {
+                    _apiResponse.Message.Add($"User not exist of UserId:{id}");
+                    _apiResponse.Status=false;
+                    _apiResponse.StatusCode = HttpStatusCode.NotFound;
+                    return _apiResponse;
+                }
+                var existingEmail = await _userDetailsService.GetUserByConditionAsync(dto.Email);
+                if (existingEmail != null)
+                {
+                    _apiResponse.Message.Add("Email ID is already exists, please try another");
+                    _apiResponse.Status = false;
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    return _apiResponse;
+                }
+                var existingMobile = await _userDetailsService.GetUserByConditionAsync(dto.MobileNo);
+                if (existingMobile != null)
+                {
+                    _apiResponse.Message.Add("Email ID is already exists, please try another");
+                    _apiResponse.Status = false;
+                    _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                    return _apiResponse;
+                }
+                bool isUpdated = await _userDetailsService.UpdateUserAsync(id, dto);
+                if (isUpdated)
+                {
+                    _apiResponse.Message.Add("User details update successful");
+                    _apiResponse.Status = true;
+                    _apiResponse.StatusCode = HttpStatusCode.OK;
+                    return _apiResponse;
+                }
+                _apiResponse.Message.Add("Something went wrong!!");
+                _apiResponse.Status = false;
+                _apiResponse.StatusCode = HttpStatusCode.BadRequest;
+                return _apiResponse;
+            }
+            catch(Exception ex)
+            {
+                string detailedError = ex.InnerException != null ? ex.InnerException.Message : ex.Message;
+                _apiResponse.Message.Add(detailedError);
+                _apiResponse.Status = false;
+                _apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                return _apiResponse;
+            }
+        }
     }
 }

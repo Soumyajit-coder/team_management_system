@@ -51,6 +51,15 @@ public partial class User
     [InverseProperty("User")]
     public virtual ICollection<ProjectMember> ProjectMembers { get; set; } = new List<ProjectMember>();
 
+    [InverseProperty("AssignedByNavigation")]
+    public virtual ICollection<TaskAssignee> TaskAssigneeAssignedByNavigations { get; set; } = new List<TaskAssignee>();
+
+    [InverseProperty("AssignedToNavigation")]
+    public virtual ICollection<TaskAssignee> TaskAssigneeAssignedToNavigations { get; set; } = new List<TaskAssignee>();
+
+    [InverseProperty("User")]
+    public virtual ICollection<TaskComment> TaskComments { get; set; } = new List<TaskComment>();
+
     [InverseProperty("User")]
     public virtual ICollection<TeamMember> TeamMembers { get; set; } = new List<TeamMember>();
 

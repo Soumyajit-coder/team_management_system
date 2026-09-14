@@ -53,4 +53,7 @@ public partial class MProject
     [ForeignKey("OrgId")]
     [InverseProperty("MProjects")]
     public virtual MOrganization Org { get; set; } = null!;
+
+    [InverseProperty("Project")]
+    public virtual ICollection<TaskMgmt> TaskMgmts { get; set; } = new List<TaskMgmt>();
 }

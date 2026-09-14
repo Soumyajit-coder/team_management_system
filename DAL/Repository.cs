@@ -61,5 +61,11 @@ namespace team_management_system.DAL
                 return await _dbSet.Where(predicate).Select(selector).FirstOrDefaultAsync();
             }
         }
+        public async Task<T> UpdateAsync(T entity)
+        {
+            _dbSet.Update(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
     }
 }

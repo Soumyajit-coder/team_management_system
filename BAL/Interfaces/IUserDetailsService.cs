@@ -9,5 +9,6 @@ namespace team_management_system.BAL.Interfaces
         Task<UserDetailsDTO> GetUserByConditionAsync(string condition);
         Task<long> CreateUserAsync(UserDTO dto);
         public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt);
+        Task<bool> UpdateUserAsync(long id, UserUpdateDTO dto);
     }
 }

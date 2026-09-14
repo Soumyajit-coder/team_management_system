@@ -48,6 +48,17 @@ namespace team_management_system.BAL.Services
             var userDetailsByCondition = await _userRepository.GetDetailsAsync(u => u.UserName == condition || u.MobileNo == condition || u.Email == condition);
             return _mapper.Map<UserDetailsDTO>(userDetailsByCondition);
         }
+        public async Task<bool> UpdateUserAsync(long id, UserUpdateDTO dto)
+        {
+            var existingUser = await _userRepository.GetDetailsAsync(u => u.Id == id);
+            if (existingUser == null)
+            {
+                return false;
+            }
+            _mapper.Map<UserUpdateDTO>(existingUser);
+            await _userRepository.UpdateAsync(existingUser);
+            return true;
+        }
         public bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt) 
         {
             if (passwordHash == null || passwordSalt == null || string.IsNullOrEmpty(password))

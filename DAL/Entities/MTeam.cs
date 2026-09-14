@@ -40,6 +40,9 @@ public partial class MTeam
     [InverseProperty("MTeams")]
     public virtual MOrganization Org { get; set; } = null!;
 
+    [InverseProperty("Team")]
+    public virtual ICollection<TaskMgmt> TaskMgmts { get; set; } = new List<TaskMgmt>();
+
     [ForeignKey("TeamLeadId")]
     [InverseProperty("MTeams")]
     public virtual User? TeamLead { get; set; }

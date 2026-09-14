@@ -24,6 +24,8 @@ public partial class teamManagementSystemDBContext : DbContext
 
     public virtual DbSet<MRoleHasPermission> MRoleHasPermissions { get; set; }
 
+    public virtual DbSet<MTaskStatus> MTaskStatuses { get; set; }
+
     public virtual DbSet<MTeam> MTeams { get; set; }
 
     public virtual DbSet<OrganizationMember> OrganizationMembers { get; set; }
@@ -31,6 +33,12 @@ public partial class teamManagementSystemDBContext : DbContext
     public virtual DbSet<ProjectMember> ProjectMembers { get; set; }
 
     public virtual DbSet<Role> Roles { get; set; }
+
+    public virtual DbSet<TaskAssignee> TaskAssignees { get; set; }
+
+    public virtual DbSet<TaskComment> TaskComments { get; set; }
+
+    public virtual DbSet<TaskMgmt> TaskMgmts { get; set; }
 
     public virtual DbSet<TeamMember> TeamMembers { get; set; }
 
@@ -87,6 +95,11 @@ public partial class teamManagementSystemDBContext : DbContext
                 .HasConstraintName("fk_m_role_has_permission_role_id");
         });
 
+        modelBuilder.Entity<MTaskStatus>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("m_task_status_pkey");
+        });
+
         modelBuilder.Entity<MTeam>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("m_team_pkey");
@@ -137,6 +150,62 @@ public partial class teamManagementSystemDBContext : DbContext
             entity.HasKey(e => e.Id).HasName("pk_roles");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
+        });
+
+        modelBuilder.Entity<TaskAssignee>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("task_assignees_pkey");
+
+            entity.Property(e => e.AssignedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.Role).HasDefaultValue((short)1);
+
+            entity.HasOne(d => d.AssignedByNavigation).WithMany(p => p.TaskAssigneeAssignedByNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("task_assignees_assigned_by_fkey");
+
+            entity.HasOne(d => d.AssignedToNavigation).WithMany(p => p.TaskAssigneeAssignedToNavigations)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("task_assignees_assigned_to_fkey");
+
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskAssignees)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("task_assignees_task_id_fkey");
+        });
+
+        modelBuilder.Entity<TaskComment>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("task_comments_pkey");
+
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            entity.HasOne(d => d.Task).WithMany(p => p.TaskComments)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("task_comments_task_id_fkey");
+
+            entity.HasOne(d => d.User).WithMany(p => p.TaskComments)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("task_comments_user_id_fkey");
+        });
+
+        modelBuilder.Entity<TaskMgmt>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("m_task_pkey");
+
+            entity.Property(e => e.Id).HasDefaultValueSql("nextval('m_task_id_seq'::regclass)");
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.Priority).HasDefaultValue((short)2);
+            entity.Property(e => e.Status).HasDefaultValue((short)1);
+            entity.Property(e => e.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            entity.HasOne(d => d.Organization).WithMany(p => p.TaskMgmts)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_task_org");
+
+            entity.HasOne(d => d.Project).WithMany(p => p.TaskMgmts).HasConstraintName("fk_task_proj");
+
+            entity.HasOne(d => d.Team).WithMany(p => p.TaskMgmts)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_task_team");
         });
 
         modelBuilder.Entity<TeamMember>(entity =>
