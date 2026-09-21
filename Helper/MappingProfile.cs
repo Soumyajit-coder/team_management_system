@@ -20,6 +20,8 @@ namespace team_management_system.Helper
             CreateMap<MProject, ProjectDTO>().ReverseMap();
             CreateMap<ProjectMember, ProjectMemberDTO>().ReverseMap();
             CreateMap<TaskMgmt, TaskMgmtDTO>().ReverseMap();
+            CreateMap<TaskComment, TaskCommentDTO>().ReverseMap();
+            CreateMap<TaskComment, CreateCommentDto>().ReverseMap();
         }
     }
 }

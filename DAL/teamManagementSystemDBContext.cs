@@ -24,6 +24,8 @@ public partial class teamManagementSystemDBContext : DbContext
 
     public virtual DbSet<MRoleHasPermission> MRoleHasPermissions { get; set; }
 
+    public virtual DbSet<MTaskPriority> MTaskPriorities { get; set; }
+
     public virtual DbSet<MTaskStatus> MTaskStatuses { get; set; }
 
     public virtual DbSet<MTeam> MTeams { get; set; }
@@ -177,6 +179,10 @@ public partial class teamManagementSystemDBContext : DbContext
             entity.HasKey(e => e.Id).HasName("task_comments_pkey");
 
             entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+            entity.HasOne(d => d.Parent).WithMany(p => p.InverseParent)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("fk_task_comments_parent");
 
             entity.HasOne(d => d.Task).WithMany(p => p.TaskComments)
                 .OnDelete(DeleteBehavior.ClientSetNull)

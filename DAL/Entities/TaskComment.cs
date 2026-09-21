@@ -28,6 +28,16 @@ public partial class TaskComment
     [Column("updated_at", TypeName = "timestamp without time zone")]
     public DateTime? UpdatedAt { get; set; }
 
+    [Column("parent_id")]
+    public long? ParentId { get; set; }
+
+    [InverseProperty("Parent")]
+    public virtual ICollection<TaskComment> InverseParent { get; set; } = new List<TaskComment>();
+
+    [ForeignKey("ParentId")]
+    [InverseProperty("InverseParent")]
+    public virtual TaskComment? Parent { get; set; }
+
     [ForeignKey("TaskId")]
     [InverseProperty("TaskComments")]
     public virtual TaskMgmt Task { get; set; } = null!;
